@@ -57,6 +57,7 @@ export const signup = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
 export const login = async (req, res) => {
     try {
         const { userName, password } = req.body
