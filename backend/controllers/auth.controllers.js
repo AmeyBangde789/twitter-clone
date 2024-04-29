@@ -61,11 +61,11 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { userName, password } = req.body
-        const user= await User.findOne({userName});
-        const isPasswordCorrect= await bcrypt.compare(password, user?.password || "")
+        const user = await User.findOne({ userName });
+        const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
 
-        if(!user || !isPasswordCorrect){
-            return res.status(400).json({error: "Invalid username or password"})
+        if (!user || !isPasswordCorrect) {
+            return res.status(400).json({ error: "Invalid username or password" })
         }
 
         generateTokenAndSetCookie(user._id, res);
@@ -89,20 +89,20 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        res.cookie("jwt","",{maxAge:0})
-        res.status(200).json({message:"Logged out successfully"})
+        res.cookie("jwt", "", { maxAge: 0 })
+        res.status(200).json({ message: "Logged out successfully" })
     } catch (error) {
         console.log("Error in logout controller", error.message);
-        res.status(500).json({error:"Internal server error"})
+        res.status(500).json({ error: "Internal server error" })
     }
 };
 
-export const getMe=async (req,res)=>{
+export const getMe = async (req, res) => {
     try {
-        const user=await User.findById(req.user._id).select("-password");
+        const user = await User.findById(req.user._id).select("-password");
         res.status(200).json(user);
     } catch (error) {
         console.log("error in getMe controller", error.message);
-        res.status(500).json({error:"Internal server error"})
+        res.status(500).json({ error: "Internal server error" })
     }
 }
