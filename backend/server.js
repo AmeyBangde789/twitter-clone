@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import postRoutes from "./routes/post.routes.js"
 import notificationRoutes from "./routes/notification.routes.js"
+import cors from 'cors'
 
 dotenv.config()
 
@@ -19,12 +20,17 @@ cloudinary.config({
 })
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser())
+const corsOptions ={
+    origin:"http://localhost:3000",
+    credentials:true
+}
+app.use(cors(corsOptions))
 
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
