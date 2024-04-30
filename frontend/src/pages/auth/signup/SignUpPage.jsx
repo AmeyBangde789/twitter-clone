@@ -16,7 +16,7 @@ const SignUpPage = () => {
 		userName: "",
 		fullName: "",
 		password: "",
-	});
+	}); 
 
 	const { mutate, isError, isPending, error } = useMutation({
 		mutationFn: async ({ email, userName, fullName, password }) => {
