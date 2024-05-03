@@ -116,7 +116,6 @@ const Post = ({ post }) => {
 	};
 
 	const handleLikePost = () => {
-		e.preventDefault();
 		if (isLiking) return;
 		likedPost();
 	};
