@@ -1,5 +1,6 @@
 import express from "express"
 import dotenv from "dotenv"
+import path from 'path'
 
 import connectMongoDB from "./db/connectMongoDB.js";
 import cookieParser from "cookie-parser";
@@ -9,7 +10,6 @@ import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import postRoutes from "./routes/post.routes.js"
 import notificationRoutes from "./routes/notification.routes.js"
-import cors from 'cors'
 
 dotenv.config()
 
@@ -21,23 +21,28 @@ cloudinary.config({
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+const __dirname=path.resolve()
 
 app.use(express.json({limit:"5mb"}));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser())
-const corsOptions ={
-    origin:"http://localhost:3000",
-    credentials:true
-}
-app.use(cors(corsOptions))
+
 
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/posts",postRoutes)
 app.use("/api/notifications", notificationRoutes)
 
-app.listen(8000, () => {
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+    app.get("*", (req,res)=>{
+        res.sendFile(path.resolve(__dirname, "frontend", "dist","index.html"));
+    })
+}
+
+app.listen(PORT, () => {
     console.log(`server is running on post ${PORT}`)
     connectMongoDB()
 })
