@@ -60,7 +60,7 @@ const Post = ({ post }) => {
 		},
 		onSucess: (updatedLikes) => {
 			queryClient.setQueryData(['posts'], (oldData) => {
-				return oldData.map(p => {
+				return oldData.map((p) => {
 					if (p._id === post._id) {
 						return { ...p, likes: updatedLikes }
 					}
@@ -116,6 +116,7 @@ const Post = ({ post }) => {
 	};
 
 	const handleLikePost = () => {
+		e.preventDefault();
 		if (isLiking) return;
 		likedPost();
 	};
